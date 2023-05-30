@@ -18,21 +18,27 @@ The correct answer is that you do want to switch. If you do not switch, you have
 
 Let's write it with some mathematical rigour:
 
-We suppose we have three doors: $A$, $B$ and $C$. And our choice is, for instance, the door $A$.
+We have the three doors: $A$, $B$ and $C$. And our choice is, for instance, the door $A$.
 Now we define the following events:
 
 - $C_A$ = the car is behind the door $A$.
 - $C_B$ = the car is behind the door $B$.
 - $C_C$ = the car is behind the door $C$.
 
-Since we assume that this is a fair game, we must assume that:
+Since we suppose that this is a fair game, we must assume that:
 
 $$ P(C_A) = P(C_B) = P(C_C) = 1/3$$
-Finally, we define the event that we want to know its probability:
+Now we define the event that we want to know its probability:
 
 - $WIC$ = winning the game if we decide to change the door.
 
-Calculating this probability is easy using the [Law of Total Probability](https://en.wikipedia.org/wiki/Law_of_total_probability), and assuming we have choosen the door $A$:
+Of course, due to we have chosen the door $A$, if the car is behind the doors $B$ or $C$ it is sure we gonna win if we decide to change our election. On the contrary, if the car is behind the door A, we gonna lose for sure in case we change the door. So,
+
+- $P(WIC | C_A) = 0$
+- $P(WIC | C_B) = 1$
+- $P(WIC | C_C) = 1$
+
+Finally, solving the problem is easy using the [Law of Total Probability](https://en.wikipedia.org/wiki/Law_of_total_probability):
 
 $$\begin{align}
 P(WIC) &= P(WIC | C_A) \cdot P(C_A) + P(WIC | C_B) \cdot P(C_B) + P(WIC | C_C) \cdot P(C_C)=\\
