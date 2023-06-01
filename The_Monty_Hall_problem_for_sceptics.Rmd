@@ -48,7 +48,7 @@ P(WIC) &= P(WIC | C_A) \cdot P(C_A) + P(WIC | C_B) \cdot P(C_B) + P(WIC | C_C) \
 
 ### The Simulation
 
-In order to convince those who don't believe the solution, let's to simulate the game one million times. In all of them we are going to choose door $A$ and we are going to always decide to change the door. Let's count how many times we win the game.
+In order to convince those who don't believe the solution, let's to simulate the game one million times. In all of them we are going to always decide to change the door. Let's count how many times we win the game.
 
 ```{r the dataframe}
 n <- 1000000
@@ -56,8 +56,9 @@ n <- 1000000
 cars_door <- sample(c("A","B","C"), size = n, replace = T)
 
 df <- data.frame(Cars_door = cars_door)
-```
 
+head(df)
+```
 We have created a dataframe with a million rows and a single column. The rows represent the times we play and in the column we have randomly set which door the car is at. Let's to see if the car is distributed as we hope:
 
 ```{r bar chart cars door}
@@ -80,10 +81,30 @@ g <- ggplot(df, aes(x = factor(cars_door), fill = cars_door)) +
                                 "C" = "#FFCCCC"))
 
 print(g)
+```
+As expected, the car is distributed with the same proportion in each of the doors.
 
+Now let's define a new column of the dataframe that will correspond to the player's choice. We are going to set it also randomly.
+
+```{r chosen door}
+df$Chosen_door <- sample(c("A","B","C"), size = n, replace = T)
+
+head(df)
+```
+At this moment, we are already in a position to know how many times we win the car in the case of not changing the door when the host offers it to us.
+```{r result if no change}
+result_function <- function(CarsDoor, OpenedDoor){
+     if(CarsDoor == OpenedDoor) {return ("Win")}
+     else {return("Lose")}
+}
+
+df$Result_if_NO_change <- mapply(result_function, df$Cars_door, df$Chosen_door)
+
+head(df)
+```
+Remember that the probability of winning in case of avoiding the change is 1/3. In the million simulated cases, what proportion is a winning decision?
+```{r probability if no change}
+sum(df['Result_if_NO_change'] == "Win") / n
 ```
 
-
-
-
-
+... to be continued!
