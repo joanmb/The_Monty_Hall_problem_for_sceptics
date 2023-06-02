@@ -106,5 +106,29 @@ Remember that the probability of winning in case of avoiding the change is 1/3. 
 ```{r probability if no change}
 sum(df['Result_if_NO_change'] == "Win") / n
 ```
+The next step will be to establish which door the host is going to open, depending on where the car is and the door that we have chosen. Let's define a new column of our dataframe:
+```{r hosts door}
+door_function <- function(cars_door, chosen_door){
+    
+    aux <- c("A", "B", "C")
+    i <- which(aux %in% cars_door)
+    j <- which(aux %in% chosen_door)
+    
+    if(cars_door == chosen_door){
+        var1 <- aux[(((i %% 3) + 1) %% 3) +1]
+        var2 <- aux[(i %% 3) + 1]
+
+        return(paste(var1," or ", var2))
+    }
+    else{
+        if(j == (i %% 3) + 1){return(aux[(j %% 3) + 1])}
+        else{return(aux[(i %% 3) + 1])}
+    }
+}
+
+df$Hosts_door <- mapply(door_function, df$Cars_door, df$Chosen_door)
+
+head(df)
+```
 
 ... to be continued!
