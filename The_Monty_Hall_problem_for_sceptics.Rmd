@@ -108,7 +108,7 @@ sum(df['Result_if_NO_change'] == "Win") / n
 ```
 The next step will be to establish which door the host is going to open, depending on where the car is and the door that we have chosen. Let's define a new column of our dataframe:
 ```{r hosts door}
-door_function <- function(cars_door, chosen_door){
+hosts_door_function <- function(cars_door, chosen_door){
     
     aux <- c("A", "B", "C")
     i <- which(aux %in% cars_door)
@@ -126,7 +126,7 @@ door_function <- function(cars_door, chosen_door){
     }
 }
 
-df$Hosts_door <- mapply(door_function, df$Cars_door, df$Chosen_door)
+df$Hosts_door <- mapply(hosts_door_function, df$Cars_door, df$Chosen_door)
 
 head(df)
 ```
