@@ -59,6 +59,7 @@ df <- data.frame(Cars_door = cars_door)
 
 head(df)
 ```
+
 We have created a dataframe with a million rows and a single column. The rows represent the times we play and in the column we have randomly set which door the car is at. Let's to see if the car is distributed as we hope:
 
 ```{r bar chart cars door}
@@ -82,6 +83,7 @@ g <- ggplot(df, aes(x = factor(cars_door), fill = cars_door)) +
 
 print(g)
 ```
+
 As expected, the car is distributed with the same proportion in each of the doors.
 
 Now let's define a new column of the dataframe that will correspond to the player's choice. We are going to set it also randomly.
@@ -91,6 +93,7 @@ df$Chosen_door <- sample(c("A","B","C"), size = n, replace = T)
 
 head(df)
 ```
+
 At this moment, we are already in a position to know how many times we win the car in the case of not changing the door when the host offers it to us.
 ```{r result if no change}
 result_function <- function(CarsDoor, OpenedDoor){
@@ -102,10 +105,12 @@ df$Result_if_NO_change <- mapply(result_function, df$Cars_door, df$Chosen_door)
 
 head(df)
 ```
+
 Remember that the probability of winning in case of avoiding the change is 1/3. In the million simulated cases, what proportion is a winning decision?
 ```{r probability if no change}
 sum(df['Result_if_NO_change'] == "Win") / n
 ```
+
 The next step will be to establish which door the host is going to open, depending on where the car is and the door that we have chosen. Let's define a new column of our dataframe:
 ```{r hosts door}
 hosts_door_function <- function(cars_door, chosen_door){
@@ -130,6 +135,8 @@ df$Hosts_door <- mapply(hosts_door_function, df$Cars_door, df$Chosen_door)
 
 head(df)
 ```
+
+Once we already know the door the host has opened, we will determine which door we will open when we change the decision:
 ```{r Door I gonna open}
 door_I_open_function <- function(hosts_door, chosen_door){
     
@@ -148,4 +155,15 @@ df$Door_I_open <- mapply(door_I_open_function, df$Hosts_door, df$Chosen_door)
 
 head(df)
 ```
-... to be continued!
+
+Moment of truth is coming, now we can know if we win or lose each time we play the game:
+```{r result if change}
+df$Result_if_change <- mapply(result_function, df$Cars_door, df$Door_I_open)
+
+head(df)
+```
+
+Finally we are going to count how many times we win the game when we change doors. This result divided by the times we play should be very close to $2/3$, the probability that we have previously calculated.
+```{r probability if change}
+sum(df['Result_if_change'] == "Win") / n
+```
