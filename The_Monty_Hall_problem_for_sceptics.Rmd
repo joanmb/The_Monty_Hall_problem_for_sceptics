@@ -156,7 +156,7 @@ df$Door_I_open <- mapply(door_I_open_function, df$Hosts_door, df$Chosen_door)
 head(df)
 ```
 
-Moment of truth is coming, now we can know if we win or lose each time we play the game:
+The moment of truth is coming, now we can know if we win or lose each time we play the game:
 ```{r result if change}
 df$Result_if_change <- mapply(result_function, df$Cars_door, df$Door_I_open)
 
